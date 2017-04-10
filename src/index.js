@@ -1,11 +1,14 @@
 import program from 'commander';
+import compare from './lib/compare';
 
 program
   .version('0.0.1')
   .description('Compares two configuration file and show a difference')
-  .option('-f, --format', 'Output format');
-
-program.arguments('<first_config>');
-program.arguments('<second_config>');
+  .option('-f, --format', 'Output format')
+  .arguments('<first_config> <second_config>')
+  .action((first, second) => {
+    const diff = compare(first, second);
+    console.log(diff);
+  });
 
 export default () => { program.parse(process.argv); };
