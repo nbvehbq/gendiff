@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-import gendiff from '../';
+import gendiff from '../lib/cli';
 
 gendiff();

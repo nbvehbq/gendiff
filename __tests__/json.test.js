@@ -1,8 +1,10 @@
 import compare from '../src/lib/compare';
 
-test('json', () => {
-  expect(compare('./__tests__/assets/one.json', './__tests__/assets/two.json'))
-  .toBe(`{
+const path = name => `./__tests__/assets/${name}`;
+
+test('Compare json', () => {
+  expect(compare(path('one.json'), path('two.json')))
+  .toEqual(`{
   + host: hexlet.ios
   - host: hexlet.io
   + timeout: 20
