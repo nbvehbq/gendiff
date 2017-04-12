@@ -1,4 +1,4 @@
 
-import compare from './lib/compare';
+import compare from './compare';
 
 export default compare;
