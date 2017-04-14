@@ -8,27 +8,27 @@ const fillAst = (firstBuff, secondBuff, deep = 0) => {
 
   const res = keys.reduce((acc, key) => {
     const left = firstBuff[key];
-	const right = secondBuff[key];
+    const right = secondBuff[key];
 
     if (!left) {
-	  const value = isObject(right) ? fillAst(right, right, deep + 1) : right;
+      const value = isObject(right) ? fillAst(right, right, deep + 1) : right;
       return [...acc, { key, value, status: '+', deep }];
     }
     if (!right) {
-	  const value = isObject(left) ? fillAst(left, left, deep + 1) : left;
+      const value = isObject(left) ? fillAst(left, left, deep + 1) : left;
       return [...acc, { key, value, status: '-', deep }];
     }
     if (left === right) {
-	  const value = isObject(left) ? fillAst(left, left, deep + 1) : left;
+      const value = isObject(left) ? fillAst(left, left, deep + 1) : left;
       return [...acc, { key, value, status: ' ', deep }];
     }
-	if (isObject(right) && isObject(left)) {
-	  const value = fillAst(left, right, deep + 1);
-	  return [...acc, { key, value, status: ' ', deep }];
-	}
-	let value = isObject(right) ? fillAst(right, right, deep + 1) : right;
+    if (isObject(right) && isObject(left)) {
+      const value = fillAst(left, right, deep + 1);
+      return [...acc, { key, value, status: ' ', deep }];
+    }
+    let value = isObject(right) ? fillAst(right, right, deep + 1) : right;
     const add = [...acc, { key, value, status: '+', deep }];
-	value = isObject(left) ? fillAst(left, left, deep + 1) : left;
+    value = isObject(left) ? fillAst(left, left, deep + 1) : left;
     return [...add, { key, value, status: '-', deep }];
   }, []);
 
@@ -37,12 +37,15 @@ const fillAst = (firstBuff, secondBuff, deep = 0) => {
 
 const printDiff = (ast) => {
   const isComplex = item => (item instanceof Array);
+  let deep = 0;
   const res = ast.map((item) => {
-    const stub = ' '.repeat(item.deep);
-    return `${stub}${item.status} ${item.key}: ${isComplex(item.value) ? printDiff(item.value) : item.value}\n${stub}`;
+    const stub = '  '.repeat(1 + (2 * item.deep));
+    deep = item.deep;
+    return `${stub}${item.status} ${item.key}: ${isComplex(item.value) ?
+      printDiff(item.value) : item.value}`;
   });
 
-  return `{\n${res.join('')}}`;
+  return `{\n${res.join('\n')}\n${'  '.repeat(deep * 2)}}`;
 };
 
 export default (before, after) => printDiff(fillAst(read(before), read(after)));

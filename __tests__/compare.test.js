@@ -42,20 +42,29 @@ describe('Compare tests...', () => {
     expect(compare(buildPath('one.json'), buildPath('two.json')))
     .toEqual(res);
   });
-  
+
   it('Compare flat yaml', () => {
     expect(compare(buildPath('one.yaml'), buildPath('two.yaml')))
     .toEqual(res);
   });
-  
+
   it('Compare flat ini', () => {
     expect(compare(buildPath('one.ini'), buildPath('two.ini')))
     .toEqual(res);
   });
-  
+
   it('Compare complex json', () => {
     expect(compare(buildPath('one_complex.json'), buildPath('two_complex.json')))
     .toEqual(rescomplex);
   });
-});
 
+  it('Compare complex yaml', () => {
+    expect(compare(buildPath('one_complex.yaml'), buildPath('two_complex.json')))
+    .toEqual(rescomplex);
+  });
+
+  it('Compare complex ini', () => {
+    expect(compare(buildPath('one_complex.ini'), buildPath('two_complex.json')))
+    .toEqual(rescomplex);
+  });
+});
