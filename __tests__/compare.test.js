@@ -39,32 +39,32 @@ const rescomplex =
 }`;
 describe('Compare tests...', () => {
   it('Compare flat json', () => {
-    expect(compare(buildPath('one.json'), buildPath('two.json')))
+    expect(compare(buildPath('one.json'), buildPath('two.json'), 'complex'))
     .toEqual(res);
   });
 
   it('Compare flat yaml', () => {
-    expect(compare(buildPath('one.yaml'), buildPath('two.yaml')))
+    expect(compare(buildPath('one.yaml'), buildPath('two.yaml'), 'complex'))
     .toEqual(res);
   });
 
   it('Compare flat ini', () => {
-    expect(compare(buildPath('one.ini'), buildPath('two.ini')))
+    expect(compare(buildPath('one.ini'), buildPath('two.ini'), 'complex'))
     .toEqual(res);
   });
 
   it('Compare complex json', () => {
-    expect(compare(buildPath('one_complex.json'), buildPath('two_complex.json')))
+    expect(compare(buildPath('one_complex.json'), buildPath('two_complex.json'), 'complex'))
     .toEqual(rescomplex);
   });
 
   it('Compare complex yaml', () => {
-    expect(compare(buildPath('one_complex.yaml'), buildPath('two_complex.json')))
+    expect(compare(buildPath('one_complex.yaml'), buildPath('two_complex.json'), 'complex'))
     .toEqual(rescomplex);
   });
 
   it('Compare complex ini', () => {
-    expect(compare(buildPath('one_complex.ini'), buildPath('two_complex.json')))
+    expect(compare(buildPath('one_complex.ini'), buildPath('two_complex.json'), 'complex'))
     .toEqual(rescomplex);
   });
 });
