@@ -1,15 +1,13 @@
 import fs from 'fs';
+import path from 'path';
 
-import yaml from 'js-yaml';
-import ini from 'ini';
+import parse from './parser';
 
-export default (ext, file) => {
-  const buff = fs.readFileSync(file, 'utf8');
+const buildPath = file =>
+  (path.isAbsolute(file) ? file : path.resolve(process.cwd(), file));
 
-  switch (ext) {
-    case '.json': return JSON.parse(buff);
-    case '.yaml': return yaml.load(buff);
-    case '.ini': return ini.parse(buff);
-    default: return {};
-  }
+export default (file) => {
+  const ext = path.extname(file);
+  const buff = fs.readFileSync(buildPath(file), 'utf8');
+  return parse(ext, buff);
 };

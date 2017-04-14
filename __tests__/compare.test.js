@@ -1,6 +1,6 @@
 import compare from '../src';
 
-const setPath = name => `./__tests__/__fixtures__/${name}`;
+const buildPath = name => `./__tests__/__fixtures__/${name}`;
 
 const res =
 `{
@@ -12,23 +12,20 @@ const res =
   + verbose: true
 }`;
 
-describe('JSON tests', () => {
-  test('Compare flat json', () => {
-    expect(compare(setPath('one.json'), setPath('two.json')))
+describe('Compare tests...', () => {
+  it('Compare flat json', () => {
+    expect(compare(buildPath('one.json'), buildPath('two.json')))
+    .toEqual(res);
+  });
+  
+  it('Compare flat yaml', () => {
+    expect(compare(buildPath('one.yaml'), buildPath('two.yaml')))
+    .toEqual(res);
+  });
+  
+  it('Compare flat ini', () => {
+    expect(compare(buildPath('one.ini'), buildPath('two.ini')))
     .toEqual(res);
   });
 });
 
-describe('YAML tests', () => {
-  test('Compare flat yaml', () => {
-    expect(compare(setPath('one.yaml'), setPath('two.yaml')))
-    .toEqual(res);
-  });
-});
-
-describe('INI tests', () => {
-  test('Compare flat ini', () => {
-    expect(compare(setPath('one.ini'), setPath('two.ini')))
-    .toEqual(res);
-  });
-});

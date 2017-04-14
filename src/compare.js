@@ -1,35 +1,29 @@
 import _ from 'lodash';
-import path from 'path';
+import read from './reader';
 
-import getFileData from './reader';
+const fillAst = (firstBuff, secondBuff) => {
+  const keys = _.union(Object.keys(firstBuff), Object.keys(secondBuff));
 
-const makePath = file =>
-  (path.isAbsolute(file) ? file : path.resolve(process.cwd(), file));
-
-export default (first, second) => {
-  const ext = path.extname(first);
-  if (ext !== path.extname(second)) {
-    return new Error('Can`t compare files with different exstension');
-  }
-
-  const firstBuff = getFileData(ext, makePath(first));
-  const secondBuff = getFileData(ext, makePath(second));
-
-  const uniqueKeys = _.union(Object.keys(firstBuff), Object.keys(secondBuff));
-
-  const res = uniqueKeys.reduce((acc, key) => {
+  const res = keys.reduce((acc, key) => {
     if (!firstBuff[key]) {
-      return [...acc, `+ ${key}: ${secondBuff[key]}`];
+      return [...acc, { key, value: secondBuff[key], status: '+' }];
     }
     if (!secondBuff[key]) {
-      return [...acc, `- ${key}: ${firstBuff[key]}`];
+      return [...acc, { key, value: firstBuff[key], status: '-' }];
     }
     if (firstBuff[key] === secondBuff[key]) {
-      return [...acc, `  ${key}: ${firstBuff[key]}`];
+      return [...acc, { key, value: firstBuff[key], status: ' ' }];
     }
-    const add = [...acc, `+ ${key}: ${secondBuff[key]}`];
-    return [...add, `- ${key}: ${firstBuff[key]}`];
+    const add = [...acc, { key, value: secondBuff[key], status: '+' }];
+    return [...add, { key, value: firstBuff[key], status: '-' }];
   }, []);
 
+  return res;
+};
+
+const printDiff = (ast) => {
+  const res = ast.map(item => `${item.status} ${item.key}: ${item.value}`);
   return `{\n  ${res.join('\n  ')}\n}`;
 };
+
+export default (before, after) => printDiff(fillAst(read(before), read(after)));
