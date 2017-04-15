@@ -37,6 +37,16 @@ const rescomplex =
         fee: 100500
     }
 }`;
+
+const resplain =
+`Property 'common.setting2' was removed
+Property 'common.setting6' was removed
+Property 'common.setting4' was added with value: 'blah blah'
+Property 'common.setting5' was added with value: 'complex value'
+Property 'group1.baz' was updated. From 'bas' to 'bars'
+Property 'group2' was removed
+Property 'group3' was added with value: 'complex value'`;
+
 describe('Compare tests...', () => {
   it('Compare flat json', () => {
     expect(compare(buildPath('one.json'), buildPath('two.json'), 'complex'))
@@ -66,5 +76,11 @@ describe('Compare tests...', () => {
   it('Compare complex ini', () => {
     expect(compare(buildPath('one_complex.ini'), buildPath('two_complex.json'), 'complex'))
     .toEqual(rescomplex);
+  });
+
+  it('test plain output', () => {
+    expect(compare(buildPath('one_complex.json'),
+      buildPath('two_complex.json'), 'plain'))
+    .toEqual(resplain);
   });
 });

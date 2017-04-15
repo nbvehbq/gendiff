@@ -6,6 +6,6 @@ export default (ext, buff) => {
     case '.json': return JSON.parse(buff);
     case '.yaml': return yaml.load(buff);
     case '.ini': return ini.parse(buff);
-    default: return {};
+    default: return new Error('Unsuportet file format');
   }
 };
