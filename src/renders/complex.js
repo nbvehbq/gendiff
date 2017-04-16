@@ -12,25 +12,29 @@ const getSymbolByType = (type) => {
 };
 
 const render = (ast, level = 0) => {
-  const res = ast.reduce((acc, item) => {
+  const renderValue = value => (_.isObject(value) ? render(value, level + 1) : value);
+
+  const res = ast.map((item) => {
     const stub = '  '.repeat(1 + (2 * level));
+
     if (item.type === 'updated') {
-      const add = [
-        ...acc, `${stub}+ ${item.key}: ${_.isObject(item.afterValue) ?
-        render(item.afterValue, level + 1) : item.afterValue}`];
-      return [
-        ...add, `${stub}- ${item.key}: ${_.isObject(item.beforeValue) ?
-        render(item.beforeValue, level + 1) : item.beforeValue}`];
+      return `${stub}+ ${item.key}: ${renderValue(item.afterValue)}\n${
+        stub}- ${item.key}: ${renderValue(item.beforeValue)}`;
     }
-    let value;
+    if (item.type === 'added') {
+      return `${stub}${getSymbolByType(item.type)} ${item.key}: ${
+        renderValue(item.afterValue)}`;
+    }
+    if (item.type === 'removed' || item.type === 'equal') {
+      return `${stub}${getSymbolByType(item.type)} ${item.key}: ${
+        renderValue(item.beforeValue)}`;
+    }
     if (item.type === 'partially changed') {
-      value = item.children;
-    } else {
-      value = !item.beforeValue ? item.afterValue : item.beforeValue;
+      return `${stub}${getSymbolByType(item.type)} ${item.key}: ${
+        renderValue(item.children)}`;
     }
-    return [...acc, `${stub}${getSymbolByType(item.type)} ${item.key}: ${_.isObject(value) ?
-      render(value, level + 1) : value}`];
-  }, []);
+    return 'Unsuported type';
+  });
 
   return `{\n${res.join('\n')}\n${'  '.repeat(level * 2)}}`;
 };
