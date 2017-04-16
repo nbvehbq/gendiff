@@ -22,8 +22,8 @@ const buildast = (firstBuff, secondBuff) => {
       return { key, beforeValue, afterValue: beforeValue, type: 'equal' };
     }
     if (_.isObject(right) && _.isObject(left)) {
-      const beforeValue = buildast(left, right);
-      return { key, beforeValue, type: 'partially changed' };
+      const children = buildast(left, right);
+      return { key, children, type: 'partially changed' };
     }
     const before = _.isObject(left) ? buildast(left, left) : left;
     const after = _.isObject(right) ? buildast(right, right) : right;

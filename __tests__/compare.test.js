@@ -78,7 +78,7 @@ describe('Compare tests...', () => {
     .toEqual(rescomplex);
   });
 
-  it('test plain output', () => {
+  it('Test plain output', () => {
     expect(compare(buildPath('one_complex.json'),
       buildPath('two_complex.json'), 'plain'))
     .toEqual(resplain);
