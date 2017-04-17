@@ -18,8 +18,8 @@ const render = (ast, level = 0) => {
     const stub = '  '.repeat(1 + (2 * level));
 
     if (item.type === 'updated') {
-      return `${stub}+ ${item.key}: ${renderValue(item.afterValue)}\n${
-        stub}- ${item.key}: ${renderValue(item.beforeValue)}`;
+      return [`${stub}+ ${item.key}: ${renderValue(item.afterValue)}`,
+        `${stub}- ${item.key}: ${renderValue(item.beforeValue)}`];
     }
     if (item.type === 'added') {
       return `${stub}${getSymbolByType(item.type)} ${item.key}: ${
@@ -36,7 +36,7 @@ const render = (ast, level = 0) => {
     return 'Unsuported type';
   });
 
-  return `{\n${res.join('\n')}\n${'  '.repeat(level * 2)}}`;
+  return `{\n${_.flatten(res).join('\n')}\n${'  '.repeat(level * 2)}}`;
 };
 
 export default render;
